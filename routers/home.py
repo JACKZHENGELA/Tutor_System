@@ -13,18 +13,13 @@ def get_all_subjects(tutors):
     for tutor in tutors:
         if tutor.subject not in response:
             response.append(tutor.subject)
-
     return response
-
 
 
 @router.get("/", response_class=HTMLResponse)
 async def get_index(request: Request):
     tutors = await Tutor.find().to_list()
-    print(tutors)
-
     subjects = get_all_subjects(tutors=tutors)
-    print(subjects)
 
     return templates.TemplateResponse("index.html", {
         "request": request,

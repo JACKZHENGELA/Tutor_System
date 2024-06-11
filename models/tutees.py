@@ -27,4 +27,3 @@ class TutorForm:
         form = await self.request.form()
         for key, value in form.items():
             self.form_data[key] = value
-        print(self.form_data)
