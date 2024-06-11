@@ -25,3 +25,13 @@ async def get_index(request: Request):
         "request": request,
         "subjects": subjects
     })
+
+
+@router.get("/subjects/{subject}", response_class=HTMLResponse)
+async def get_subjects(request: Request, subject: str):
+    tutors = await Tutor.find(Tutor.subject == subject).to_list()
+    print(tutors)
+    return templates.TemplateResponse("subject_detail.html", {
+        "request": request,
+        "tutors": tutors
+    })

@@ -11,13 +11,20 @@
         <img src="https://th.bing.com/th/id/OIP.FccqpHfcjYF-_RQRMBYi5wHaHH?rs=1&pid=ImgDetMain" alt="Biology Img" class="card-img-top">
         {% elif subject == "Physics" %}
         <img src="https://www.tntech.edu/cas/images/physics/physics_icon.jpg" alt="Physics Img" class="card-img-top">
+        {% elif subject == "Economy" %}
+        <img src="https://th.bing.com/th/id/OIP.zL42sW8TfH284SntTp41vAHaE8?rs=1&pid=ImgDetMain" alt="Economy Img" class="card-img-top">
         {% else %}
         <img src= 
         "https://dreieck.com/en/wp-content/uploads/sites/2/2023/03/opened-book-06-adding-another-outline-850x638.png" class="card-img-top" alt="...">
         {% endif %}
         <div class="card-body">
           <h5 class="card-title">{{ subject }}</h5>
+          <p> All the students needing help in {{ subject }}</p>
+          <div class="d-grid gap-2">
+            <a class="btn btn-primary" type="button" href="/subjects/{{subject}}">Details -></a>
+          </div>
         </div>
+        
       </div>
     </div>
     {% endfor %}
