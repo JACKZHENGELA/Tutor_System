@@ -10,7 +10,6 @@ class Tutor(Document):
     gpa: float
     subject: str
     gender: bool
-    role: bool
     grade: int
 
     class Settings:

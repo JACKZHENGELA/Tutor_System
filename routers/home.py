@@ -17,6 +17,13 @@ def get_all_subjects(tutors):
 
 
 @router.get("/", response_class=HTMLResponse)
+async def selection(request: Request):
+    return templates.TemplateResponse("selection.html", {
+        "request": request
+    })
+
+
+@router.get("/subjects", response_class=HTMLResponse)
 async def get_index(request: Request):
     tutors = await Tutor.find().to_list()
     subjects = get_all_subjects(tutors=tutors)
@@ -35,3 +42,35 @@ async def get_subjects(request: Request, subject: str):
         "request": request,
         "tutors": tutors
     })
+
+@router.get("/tutor/add", response_class=HTMLResponse)
+async def get_tutee_add(request: Request):
+    return templates.TemplateResponse("form.html", {
+        "request": request
+    })
+
+@router.post("/tutor/add", response_class=HTMLResponse)
+async def create_tutor(request: Request):
+    form = TutorForm(request=request)
+    await form.create_form_data()
+
+    # print(form.form_data)
+    new_tutee = Tutor(
+        name=form.form_data["name"],
+        gpa=form.form_data["gpa"],
+        gender=form.form_data["gender"],
+        grade=form.form_data["grade"],
+        subject=form.form_data["subject"]
+    )
+    try:
+        await new_tutee.insert()
+        return templates.TemplateResponse("form.html", {
+            "request": request,
+            "msg": "Success"
+        })
+    except Exception as err:
+        return templates.TemplateResponse("form.html", {
+            "request": request,
+            "msg": "Error",
+            "err": err
+        })
