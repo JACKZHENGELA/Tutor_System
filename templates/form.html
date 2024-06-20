@@ -6,22 +6,28 @@
   <h1 class="text-center">Getting Help</h1>
   <div class="row justify-content-md-center py-2">
     <div class="col-sm-12 col-md-10 col-lg-8">
-      {% if msg == "Success" %}
+      {% if msg == "Success :)" %}
       <div class="alert alert-success" role="alert">
         {{ msg }}
       </div>
       {% endif %}
-      {% if msg == "Error"%}
+      {% if msg == "There is an error going on, please contact the organizer or try again later ;("%}
       <div class="alert alert-danger" role="alert">
         {{ msg }}
       </div>
       {% endif %}
+      {% if msg == "You already signed up for this subject" %}
+      <div class="alert alert-warning" role="alert">
+        {{ msg }}
+      </div>
+      {% endif %}
+      
       <form action="/tutor/add" method="post">
         <div class="row">
 
           <div class="col-sm-12 col-md-6 mb-3">
             <label for="name" class="form-label">
-              Name
+              Full Name
               <span class="text-danger">*</span>
             </label>
             <input type="text" class="form-control" id="name" name="name" required>
@@ -51,27 +57,37 @@
             <input type="text" class="form-control" id="grade" name="grade" required>
           </div>
 
-        <div class="mb-3">
-            <p class="form-label">
-                Gender
-                <span class="text-danger">*</span>
-            </p>
+        
+        <div class="row">
 
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="gender" id="gender1" value="True" checked>
-                <label class="form-check-label" for="gender1">
-                    Male
-                </label>
-                </div>
-                <div class="form-check">
-                <input class="form-check-input" type="radio" name="gender" value="False" id="gender2">
-                <label class="form-check-label" for="gender2">
-                    Female
-                </label>
+          <div class="col-sm-12 col-md-6 mb-3">
+            <p class="form-label">
+              Gender
+              <span class="text-danger">*</span>
+          </p>
+
+          <div class="form-check">
+              <input class="form-check-input" type="radio" name="gender" id="gender1" value="True" checked>
+              <label class="form-check-label" for="gender1">
+                  Male
+              </label>
+              </div>
+              <div class="form-check">
+              <input class="form-check-input" type="radio" name="gender" value="False" id="gender2">
+              <label class="form-check-label" for="gender2">
+                  Female
+              </label>
             </div>
+          </div>
+          <div class="col-sm-12 col-md-6 mb-3">
+            <label for="date">Prefered Date
+              <span class="text-danger">*</span>
+            </label>
+            <p><input type="date" id="date" name="date" required></p>
         </div>
-        
-        
+
+
+
         <div class="text-end mt-5">
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>

@@ -16,6 +16,14 @@ def get_all_subjects(tutors):
     return response
 
 
+def get_all_names(tutors):
+    response = []
+    for tutor in tutors:
+        if tutor.name not in response:
+            response.append(tutor.name)
+    return response
+
+
 @router.get("/", response_class=HTMLResponse)
 async def selection(request: Request):
     return templates.TemplateResponse("selection.html", {
@@ -37,17 +45,18 @@ async def get_index(request: Request):
 @router.get("/subjects/{subject}", response_class=HTMLResponse)
 async def get_subjects(request: Request, subject: str):
     tutors = await Tutor.find(Tutor.subject == subject).to_list()
-    print(tutors)
     return templates.TemplateResponse("subject_detail.html", {
         "request": request,
         "tutors": tutors
     })
+
 
 @router.get("/tutor/add", response_class=HTMLResponse)
 async def get_tutee_add(request: Request):
     return templates.TemplateResponse("form.html", {
         "request": request
     })
+
 
 @router.post("/tutor/add", response_class=HTMLResponse)
 async def create_tutor(request: Request):
@@ -60,17 +69,51 @@ async def create_tutor(request: Request):
         gpa=form.form_data["gpa"],
         gender=form.form_data["gender"],
         grade=form.form_data["grade"],
-        subject=form.form_data["subject"]
+        subject=form.form_data["subject"],
+        date=form.form_data["date"]
     )
     try:
-        await new_tutee.insert()
-        return templates.TemplateResponse("form.html", {
-            "request": request,
-            "msg": "Success"
-        })
+        tutors = await Tutor.find(Tutor.subject == new_tutee.subject).to_list()
+        res = []
+        for tutor in tutors:
+            res.append(tutor.name)
+        print(res)
+        print(new_tutee.name)
+        if new_tutee.name not in res:
+            await new_tutee.insert()
+            return templates.TemplateResponse("form.html", {
+                "request": request,
+                "msg": "Success :)"
+            })
+        else:
+            return templates.TemplateResponse("form.html", {
+                "request": request,
+                "msg": "You already signed up for this subject",
+                "err": "You already signed up for this subject"
+            })
     except Exception as err:
         return templates.TemplateResponse("form.html", {
             "request": request,
-            "msg": "Error",
+            "msg": "There is an error going on, please contact the organizer or try again later ;(",
             "err": err
         })
+
+
+@router.get("/tutor/name", response_class=HTMLResponse)
+async def get_tutee_by_name(request: Request):
+    tutors_repeated = await Tutor.find().to_list()
+    tutors = get_all_names(tutors=tutors_repeated)
+    print(tutors)
+    return templates.TemplateResponse("name.html", {
+        "request": request,
+        "tutors": tutors
+    })
+
+
+@router.get("/tutor/name/{tutor}", response_class=HTMLResponse)
+async def get_registrations(request: Request, tutor: str):
+    tutors = await Tutor.find(Tutor.name == tutor).to_list()
+    return templates.TemplateResponse("personal_registration.html", {
+        "request": request,
+        "tutors": tutors
+    })

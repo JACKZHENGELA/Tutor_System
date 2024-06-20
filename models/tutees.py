@@ -11,6 +11,7 @@ class Tutor(Document):
     subject: str
     gender: bool
     grade: int
+    date: str
 
     class Settings:
         name = "tutors"
