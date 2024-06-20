@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from models.tutees import Tutor, TutorForm
@@ -117,3 +117,55 @@ async def get_registrations(request: Request, tutor: str):
         "request": request,
         "tutors": tutors
     })
+
+
+@router.get("/tutor/name/delete/{tutor_id}", response_class=RedirectResponse)
+async def delete_appointment(request: Request, tutor_id: str):
+    try:
+        tutor = await Tutor.get(tutor_id)
+        await tutor.delete()
+        return RedirectResponse(url="/")
+
+    except Exception as err:
+        print(err)
+        return RedirectResponse(url=f"/tutor/name/delete/{tutor_id}")
+
+
+@router.get("/tutor/name/update/{tutor_id}", response_class=HTMLResponse)
+async def get_update_page(request: Request, tutor_id: str):
+    tutor = await Tutor.get(tutor_id)
+    return templates.TemplateResponse("update.html", {
+        "request": request,
+        "tutor": tutor
+    })
+
+
+@router.post("/tutor/name/update/{tutor_id}", response_class=HTMLResponse)
+async def update(request: Request, tutor_id: str):
+    tutor = await Tutor.get(tutor_id)
+    try:
+        form = TutorForm(request=request)
+        await form.create_form_data()
+
+        tutor.name = form.form_data["name"]
+        tutor.gpa = form.form_data["gpa"]
+        tutor.subject = form.form_data["subject"]
+        tutor.grade = form.form_data["grade"]
+        tutor.gender = form.form_data["gender"]
+        tutor.date = form.form_data["date"]
+
+        await tutor.save()
+
+        return templates.TemplateResponse("update.html", {
+            "msg": "Success",
+            "request": request,
+            "tutor": tutor
+        })
+
+    except Exception as err:
+        print(err)
+        return templates.TemplateResponse("update.html", {
+            "request": request,
+            "tutor": tutor,
+            "msg": "Error"
+        })

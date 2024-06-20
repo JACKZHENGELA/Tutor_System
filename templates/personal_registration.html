@@ -1,0 +1,50 @@
+{% set current_page = "personal_registration" %}
+{% extends "layouts/app.html" %}
+{% block title %}Registrations{% endblock %}
+{% block content %}
+<div class="container h-100 my-5 text-center">
+{% for tutor in tutors %}
+<div class="mx-5 px-5 py-3">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">{{tutor.name}}</a>
+    <div class=" navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link">Subject: {{tutor.subject}}</a>
+        <a class="nav-link">Date: {{tutor.date}}</a>
+      </div>
+      
+    </div>
+    <div class="ms-auto">
+        <a type="button" class="btn btn-outline-warning" href="/tutor/name/update/{{tutor.id}}">Edit</a>
+        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+    </div>
+  </div>
+</nav>
+</div>
+
+
+
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalLabel">Delete Appointment</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete the appointment at <strong>{{tutor.date}}</strong>?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <form action="/tutor/name/delete/{{tutor.id}}" method="get">
+            <button type="submit" class="btn btn-danger">Delete Appointment</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+{% endblock %}
