@@ -1,0 +1,44 @@
+{% set current_page = "form" %}
+{% extends "layouts/app.html" %}
+{% block title %}Getting Help{% endblock %}
+{% block content %}
+
+<div class="container my-5">
+    <div class="bg-body-tertiary p-5 rounded">
+      <div class="col-sm-8 py-5 mx-auto">
+        <h1 class="display-5 fw-normal">{{tutor.name}}</h1>
+        <table class="table table-striped my-3">
+            <tbody>
+              <tr>
+                <th scope="row">GPA</th>
+                <td>{{tutor.gpa}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Subject Needing Help</th>
+                <td>{{tutor.subject}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Gender</th>
+                <td>{% if tutor.gender == True%} Male {% else %} Female {% endif %}</td>
+              </tr>
+              <tr>
+                <th scope="row">Grade</th>
+                <td>{{tutor.grade}}</td>
+              </tr>
+              <tr>
+                <th scope="row">Appointment Day</th>
+                <td> <strong>{{tutor.date}}</strong> </td>
+              </tr>
+              <tr>
+                <th scope="row">Contact Email</th>
+                <td> <strong>{{tutor.email}}</strong> </td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="btn btn-primary" href="/subjects/{{tutor.subject}}" role="button"><- Back</a>
+        </p>
+    </div>
+    </div>
+  </div>
+
+{% endblock %}

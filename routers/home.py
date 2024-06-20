@@ -171,3 +171,12 @@ async def update(request: Request, tutor_id: str):
             "tutor": tutor,
             "msg": "Error"
         })
+
+
+@router.get("/tutor/subjects/{tutor_id}", response_class=HTMLResponse)
+async def get_detail(request: Request, tutor_id: str):
+    tutor = await Tutor.get(tutor_id)
+    return templates.TemplateResponse("detail.html", {
+            "request": request,
+            "tutor": tutor
+        })
