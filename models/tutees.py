@@ -1,8 +1,5 @@
-from datetime import datetime, timezone
-from typing import Optional
 from fastapi import Request
-# from pydantic import BaseModel
-from beanie import Document, Indexed
+from beanie import Document
 
 
 class Tutor(Document):
@@ -12,6 +9,7 @@ class Tutor(Document):
     gender: bool
     grade: int
     date: str
+    email: str
 
     class Settings:
         name = "tutors"

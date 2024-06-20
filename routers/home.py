@@ -70,7 +70,8 @@ async def create_tutor(request: Request):
         gender=form.form_data["gender"],
         grade=form.form_data["grade"],
         subject=form.form_data["subject"],
-        date=form.form_data["date"]
+        date=form.form_data["date"],
+        email=form.form_data["email"]
     )
     try:
         tutors = await Tutor.find(Tutor.subject == new_tutee.subject).to_list()
@@ -153,6 +154,7 @@ async def update(request: Request, tutor_id: str):
         tutor.grade = form.form_data["grade"]
         tutor.gender = form.form_data["gender"]
         tutor.date = form.form_data["date"]
+        tutor.email = form.form_data["email"]
 
         await tutor.save()
 
